@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Барбершоп - Главная</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать в наш Барбершоп!</h1>
+        <nav>
+            <a href="{% url 'landing' %}">Главная</a>
+            <a href="{% url 'orders_list' %}">Заявки</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Лучшие мастера города</h2>
+            <p>Профессиональные услуги для вашего стиля</p>
+        </section>
+
+        <section class="masters">
+            <h3>Наши мастера</h3>
+            <div class="masters-grid">
+                {% for master in masters %}
+                <div class="master-card">
+                    <h4>{{ master.name }}</h4>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="services">
+            <h3>Наши услуги</h3>
+            <ul class="services-list">
+                {% for service in services %}
+                <li>{{ service }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="booking">
+            <h3>Записаться на прием</h3>
+            <p>Свяжитесь с нами для записи на удобное время</p>
+            <a href="{% url 'thanks' %}" class="btn">Оставить заявку</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Барбершоп. Все права защищены.</p>
+    </footer>
+
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спасибо за заявку - Барбершоп</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Барбершоп</h1>
+        <nav>
+            <a href="{% url 'landing' %}">Главная</a>
+            <a href="{% url 'orders_list' %}">Заявки</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="thanks">
+            <h2>Спасибо за вашу заявку!</h2>
+            <p>Ваша заявка успешно принята. Мы свяжемся с вами в ближайшее время для подтверждения записи.</p>
+            <div class="thanks-actions">
+                <a href="{% url 'landing' %}" class="btn">Вернуться на главную</a>
+                <a href="{% url 'orders_list' %}" class="btn">Посмотреть все заявки</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Барбершоп. Все права защищены.</p>
+    </footer>
+
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>

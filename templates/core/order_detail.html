@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка #{{ order.id }} - Барбершоп</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Барбершоп</h1>
+        <nav>
+            <a href="{% url 'landing' %}">Главная</a>
+            <a href="{% url 'orders_list' %}">Заявки</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="order-detail">
+            <h2>Заявка #{{ order.id }}</h2>
+            
+            <div class="order-info">
+                <div class="info-section">
+                    <h3>Информация о клиенте</h3>
+                    <p><strong>Имя клиента:</strong> {{ order.client_name }}</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>Информация о записи</h3>
+                    <p><strong>Дата:</strong> {{ order.date }}</p>
+                    <p><strong>Статус:</strong> 
+                        <span class="status status-{{ order.status }}">{{ order.status }}</span>
+                    </p>
+                </div>
+
+                <div class="info-section">
+                    <h3>Мастер</h3>
+                    {% if master %}
+                    <p><strong>Имя мастера:</strong> {{ master.name }}</p>
+                    {% else %}
+                    <p>Мастер не найден</p>
+                    {% endif %}
+                </div>
+
+                <div class="info-section">
+                    <h3>Заказанные услуги</h3>
+                    {% if order.services %}
+                    <ul class="services-list">
+                        {% for service in order.services %}
+                        <li>{{ service }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Услуги не указаны</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="order-actions">
+                <a href="{% url 'orders_list' %}" class="btn">Вернуться к списку</a>
+                <a href="{% url 'landing' %}" class="btn">На главную</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Барбершоп. Все права защищены.</p>
+    </footer>
+
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>
