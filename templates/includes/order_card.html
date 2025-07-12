@@ -1,0 +1,37 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h5 class="card-title">
+                    <i class="bi bi-person"></i> {{ order.client_name }}
+                </h5>
+                <p class="card-text">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> {{ order.date }} в {{ order.time }}
+                    </small>
+                </p>
+                <p class="card-text">
+                    <strong>Услуги:</strong> {{ order.services|join:", " }}
+                </p>
+                <p class="card-text">
+                    <strong>Мастер:</strong> {{ order.master }}
+                </p>
+            </div>
+            <div class="col-md-4 text-end">
+                {% if order.status == 'new' %}
+                    <span class="badge bg-warning text-dark mb-2">Новая</span>
+                {% elif order.status == 'confirmed' %}
+                    <span class="badge bg-primary mb-2">Подтверждена</span>
+                {% elif order.status == 'completed' %}
+                    <span class="badge bg-success mb-2">Выполнена</span>
+                {% else %}
+                    <span class="badge bg-secondary mb-2">{{ order.status }}</span>
+                {% endif %}
+                <br>
+                <a href="{% url 'order_detail' order.id %}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-eye"></i> Подробнее
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="display-5 fw-bold">
+                    <i class="bi bi-file-text"></i> Заявка №{{ order.id }}
+                </h1>
+                <a href="{% url 'orders_list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+            
+            {% if order %}
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h4 class="mb-0">
+                                    <i class="bi bi-person-circle"></i> {{ order.client_name }}
+                                </h4>
+                            </div>
+                            <div class="col-auto">
+                                {% if order.status == 'new' %}
+                                    <span class="badge bg-warning text-dark">Новая</span>
+                                {% elif order.status == 'confirmed' %}
+                                    <span class="badge bg-info">Подтверждена</span>
+                                {% elif order.status == 'completed' %}
+                                    <span class="badge bg-success">Выполнена</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ order.status }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="bi bi-person"></i> Контактная информация</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Имя:</strong></td>
+                                        <td>{{ order.client_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Телефон:</strong></td>
+                                        <td>
+                                            <a href="tel:{{ order.phone }}" class="text-decoration-none">
+                                                {{ order.phone }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email:</strong></td>
+                                        <td>
+                                            <a href="mailto:{{ order.email }}" class="text-decoration-none">
+                                                {{ order.email }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5><i class="bi bi-calendar"></i> Детали записи</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Дата:</strong></td>
+                                        <td>{{ order.date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Время:</strong></td>
+                                        <td>{{ order.time }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Мастер:</strong></td>
+                                        <td>{{ order.master }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="bi bi-scissors"></i> Услуги</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for service in order.services %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ service }}
+                                            <span class="badge bg-primary rounded-pill">
+                                                <i class="bi bi-check"></i>
+                                            </span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5><i class="bi bi-chat-text"></i> Комментарий</h5>
+                                {% if order.comment %}
+                                    <div class="alert alert-light">
+                                        <i class="bi bi-quote"></i>
+                                        {{ order.comment }}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted">Комментарий не оставлен</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-light">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock"></i> Заявка создана: {{ order.date }}
+                                </small>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <div class="btn-group" role="group">
+                                    {% if order.status == 'new' %}
+                                        <button class="btn btn-sm btn-success" onclick="updateStatus('confirmed')">
+                                            <i class="bi bi-check-circle"></i> Подтвердить
+                                        </button>
+                                    {% elif order.status == 'confirmed' %}
+                                        <button class="btn btn-sm btn-primary" onclick="updateStatus('completed')">
+                                            <i class="bi bi-check-all"></i> Завершить
+                                        </button>
+                                    {% endif %}
+                                    <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> Печать
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Ошибка!</strong> Заявка не найдена.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function updateStatus(newStatus) {
+        if (confirm('Вы уверены, что хотите изменить статус заявки?')) {
+            // Здесь будет AJAX запрос для обновления статуса
+            alert('Функция обновления статуса будет реализована в следующих версиях');
+        }
+    }
+</script>
+{% endblock %}

@@ -1,58 +1,151 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Барбершоп - Главная</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Добро пожаловать в наш Барбершоп!</h1>
-        <nav>
-            <a href="{% url 'landing' %}">Главная</a>
-            <a href="{% url 'orders_list' %}">Заявки</a>
-        </nav>
-    </header>
 
-    <main>
-        <section class="hero">
-            <h2>Лучшие мастера города</h2>
-            <p>Профессиональные услуги для вашего стиля</p>
-        </section>
+{% block title %}{{ page_title }} - {{ site_name }}{% endblock %}
 
-        <section class="masters">
-            <h3>Наши мастера</h3>
-            <div class="masters-grid">
-                {% for master in masters %}
-                <div class="master-card">
-                    <h4>{{ master.name }}</h4>
-                </div>
-                {% endfor %}
+{% block content %}
+<!-- Hero Section -->
+<section id="home" class="hero-section bg-dark text-light py-5" style="margin-top: 76px;">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">{{ site_name }}</h1>
+                <p class="lead mb-4">Профессиональные услуги для настоящих мужчин. Стиль, качество и индивидуальный подход к каждому клиенту.</p>
+                <a href="#booking" class="btn btn-primary btn-lg">
+                    <i class="bi bi-calendar-check"></i> Записаться
+                </a>
             </div>
-        </section>
+            <div class="col-lg-6">
+                <img src="{% static 'images/barbershop-hero.jpg' %}" alt="Барбершоп" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</section>
 
-        <section class="services">
-            <h3>Наши услуги</h3>
-            <ul class="services-list">
-                {% for service in services %}
-                <li>{{ service }}</li>
-                {% endfor %}
-            </ul>
-        </section>
+<!-- About Section -->
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">О нас</h2>
+                <p class="lead">Мы создаем не просто стрижки, мы создаем стиль</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Наша история</h3>
+                <p>Барбершоп "Стальная Борода" работает уже более 10 лет, предоставляя качественные услуги мужской парикмахерской. Мы сочетаем классические традиции с современными тенденциями.</p>
+            </div>
+            <div class="col-lg-6">
+                <h3>Наши принципы</h3>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-check-circle text-primary"></i> Индивидуальный подход</li>
+                    <li><i class="bi bi-check-circle text-primary"></i> Качественные материалы</li>
+                    <li><i class="bi bi-check-circle text-primary"></i> Профессиональные мастера</li>
+                    <li><i class="bi bi-check-circle text-primary"></i> Комфортная атмосфера</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <section class="booking">
-            <h3>Записаться на прием</h3>
-            <p>Свяжитесь с нами для записи на удобное время</p>
-            <a href="{% url 'thanks' %}" class="btn">Оставить заявку</a>
-        </section>
-    </main>
+<!-- Services Section -->
+<section id="services" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Наши услуги</h2>
+                <p class="lead">Полный спектр услуг для мужского ухода</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for service in services %}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <i class="bi bi-scissors display-4 text-primary mb-3"></i>
+                        <h5 class="card-title">{{ service.name }}</h5>
+                        <p class="card-text">{{ service.duration }}</p>
+                        <h4 class="text-primary">{{ service.price }} ₽</h4>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-    <footer>
-        <p>© 2025 Барбершоп. Все права защищены.</p>
-    </footer>
+<!-- Masters Section -->
+<section id="masters" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Наши мастера</h2>
+                <p class="lead">Профессионалы своего дела</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for master in masters %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-person-circle display-4 text-primary mb-3"></i>
+                        <h5 class="card-title">{{ master.name }}</h5>
+                        <p class="card-text">
+                            <strong>Опыт:</strong> {{ master.experience }}<br>
+                            <strong>Специализация:</strong> {{ master.specialty }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-    <script src="{% static 'main.js' %}"></script>
-</body>
-</html>
+<!-- Booking Section -->
+<section id="booking" class="py-5 bg-primary text-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="display-5 fw-bold mb-4">Записаться на прием</h2>
+                <p class="lead mb-4">Оставьте заявку, и мы свяжемся с вами для подтверждения записи</p>
+                
+                <form class="row g-3 justify-content-center" method="post" action="{% url 'thanks' %}">
+                    {% csrf_token %}
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="client_name" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="tel" class="form-control" name="phone" placeholder="Телефон" required>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="service" required>
+                            <option value="">Выберите услугу</option>
+                            {% for service in services %}
+                            <option value="{{ service.name }}">{{ service.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" name="date" required>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="master" required>
+                            <option value="">Выберите мастера</option>
+                            {% for master in masters %}
+                            <option value="{{ master.name }}">{{ master.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-light btn-lg w-100">
+                            <i class="bi bi-send"></i> Отправить заявку
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

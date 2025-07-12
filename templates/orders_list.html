@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="display-5 fw-bold">
+                    <i class="bi bi-list-ul"></i> Список заявок
+                </h1>
+                <div>
+                    <span class="badge bg-primary">Всего: {{ orders|length }}</span>
+                </div>
+            </div>
+            
+            {% if orders %}
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Поиск по имени клиента...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="statusFilter">
+                            <option value="">Все статусы</option>
+                            <option value="new">Новые</option>
+                            <option value="confirmed">Подтвержденные</option>
+                            <option value="completed">Выполненные</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="orders-container">
+                    {% for order in orders %}
+                        {% include 'includes/order_card.html' %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox display-1 text-muted"></i>
+                    <h3 class="text-muted mt-3">Заявок пока нет</h3>
+                    <p class="text-muted">Когда появятся новые заявки, они будут отображены здесь.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const cards = document.querySelectorAll('#orders-container .card');
+        
+        cards.forEach(card => {
+            const clientName = card.querySelector('.card-title').textContent.toLowerCase();
+            if (clientName.includes(searchTerm)) {
+                card.parentElement.style.display = 'block';
+            } else {
+                card.parentElement.style.display = 'none';
+            }
+        });
+    });
+    
+    // Status filter
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        const selectedStatus = this.value;
+        const cards = document.querySelectorAll('#orders-container .card');
+        
+        cards.forEach(card => {
+            const badge = card.querySelector('.badge');
+            let cardStatus = '';
+            
+            if (badge.textContent === 'Новая') cardStatus = 'new';
+            else if (badge.textContent === 'Подтверждена') cardStatus = 'confirmed';
+            else if (badge.textContent === 'Выполнена') cardStatus = 'completed';
+            
+            if (selectedStatus === '' || cardStatus === selectedStatus) {
+                card.parentElement.style.display = 'block';
+            } else {
+                card.parentElement.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}
